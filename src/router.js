@@ -1,25 +1,45 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
 
-Vue.use(Router)
+Vue.use(Router);
+
+import Signin from '@/components/Signin'
+import Main from '@/components/Main'
+import PageNotFound from '@/components/PageNotFound'
+import Product from '@/components/product/Product'
+import ProductItem from '@/components/product/ProductItem'
 
 export default new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
+      path: '/signin',
+      name: 'signin',
+      component: Signin
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
+      path: '/',
+      name: 'main',
+      component: Main,
+      children: [
+        {
+          path: 'products',
+          name: 'products',
+          component: Product
+        },
+        {
+          path: 'products/:id',
+          name: 'products-item',
+          component: ProductItem
+        },
+      ]
+
+    },
+    {
+      path: '*',
+      name: '404',
+      component: PageNotFound
     }
   ]
 })
