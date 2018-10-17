@@ -81,8 +81,7 @@
 </template>
 
 <script>
-  import {ProductResource, ProductTypeResource} from '@/plugins/http'
-  import {EventBus} from "@/plugins/utility";
+  import {api, EventBus} from '@/plugins'
 
   export default {
     components: {},
@@ -126,14 +125,14 @@
       save() {
         if (this.$refs.form.validate()) {
           if (this.which) {
-            ProductTypeResource.add({}, {
+            api.endpoints.create({
               name: this.productType.name,
               device_id: this.productType.device + 1
             }).then(response => {
-              this.product.type_id = response.body.id;
+              this.product.type_id = response.data.id;
               this.saveProduct()
             }, response => {
-              console.log(response.body)
+              console.log(response.data)
             });
           } else {
             this.saveProduct()
@@ -148,11 +147,11 @@
         formData.append('price',this.product.price);
         formData.append('image',this.product.image);
         formData.append('type_id',this.product.type_id);
-        ProductResource.add({}, formData).then(response => {
-          console.log(response.body);
+        api.endpoints.products.create(formData).then(response => {
+          console.log(response.data);
           this.dialogOn = false
         }, response => {
-          console.log(response.body)
+          console.log(response.data)
         });
         EventBus.$emit('productCreated')
       },

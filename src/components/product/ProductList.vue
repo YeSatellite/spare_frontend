@@ -23,8 +23,6 @@
 </template>
 
 <script>
-  import {ProductResource} from '@/plugins/http'
-  import {EventBus} from '@/plugins/utility'
 
   export default {
     props: {
@@ -43,36 +41,31 @@
         }
       }
     },
-    mounted(){
-      EventBus.$on('productCreated', () => {
-        console.log('yes');
-        this.getProducts()
-      });
+    computed:{
+      products(){
+        return this.$store.
+      }
     },
-    watch: {
-      filter: {
-        immediate: true,
-        deep: true,
-        handler() {
-          this.getProducts()
-        },
-      },
+    mounted(){
+      this.$store.dispatch('updateProducts');
     },
     methods: {
+      /***
       getProducts(){
         if (this.busy) return;
         this.busy = true;
-        ProductResource.getAll({
+        api.endpoints.products.getAll({
           search: this.filter.search,
           device: this.filter.device.map(val => val+1).join('-'),
           few: this.filter.few?1:0
         }).then(response => {
-          this.products = response.body;
+          this.products = response.data;
           this.busy = false;
-          console.log(response.body)
+          console.log(response.data)
         }, response => {
-          console.log(response.body)
+          console.log(response.data)
         });
+        ***/
       }
     }
   }

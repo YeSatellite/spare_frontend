@@ -22,7 +22,7 @@ class API {
 
   createBasicCRUDEndpoint(name) {
     const endpoint = {};
-    endpoint.getAll = (query) => this.instance.get(`${name}/`, { params: { query } });
+    endpoint.getAll = (query) => this.instance.get(`${name}/`, { params: query});
     endpoint.getOne = ({id}) => this.instance.get(`${name}/${id}/`);
     endpoint.create = (body) => this.instance.post(`${name}/`, body);
     endpoint.update = ({id}, body) => this.instance.put  (`${name}/${id}/`, body);

@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import {ProductResource} from '@/plugins/http'
+  import {api} from '../../plugins'
   import PictureInput from 'vue-picture-input'
 
   export default {
@@ -81,11 +81,11 @@
       }
     },
     mounted() {
-      ProductResource.get({id: this.$route.params.id},{id: this.$route.params.id}).then(response => {
-        this.products = response.body;
-        console.log(response.body)
+      api.endpoints.products.getAll({id: this.$route.params.id},{id: this.$route.params.id}).then(response => {
+        this.products = response.data;
+        console.log(response.data)
       }, response => {
-        console.log(response.body)
+        console.log(response.data)
       })
     },
     methods: {}

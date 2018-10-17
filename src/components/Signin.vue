@@ -46,7 +46,7 @@
 </template>
 
 <script>
-  import http from "../plugins/http";
+  import {api} from "../plugins";
 
   export default {
     name: 'Signin',
@@ -64,7 +64,7 @@
     methods: {
       signin() {
         if (this.$refs.form.validate()) {
-          http.endpoints.login.create({username: this.login, password: this.password}).then(response => {
+          api.endpoints.login.create({username: this.login, password: this.password}).then(response => {
             console.log(response);
             this.$store.commit('setUser', response.data);
             this.$router.push('/');

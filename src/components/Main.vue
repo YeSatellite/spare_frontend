@@ -24,8 +24,8 @@
       if (this.$store.getters.user.token == null) {
         this.$router.push('signin')
       }
-      this.$store.dispatch('updateProductTypes')
-      this.$store.dispatch('updatePlaces')
+      this.$store.dispatch('updateProductTypes');
+      this.$store.dispatch('updatePlaces');
     },
   }
 </script>

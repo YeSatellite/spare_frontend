@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import {ProductTypeResource, PlacesResource} from '@/plugins/http'
+import {api} from '@/plugins'
 
 Vue.use(Vuex);
 
@@ -9,18 +9,22 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     user: {},
-    productTypes: [],
     places: [],
+    productTypes: [],
+    products: [],
   },
   getters: {
     user: state => {
       return state.user
     },
+    places: state => {
+      return state.places
+    },
     productTypes: state => {
       return state.productTypes
     },
-    places: state => {
-      return state.places
+    products: state => {
+      return state.products
     }
   },
   mutations: {
@@ -30,36 +34,48 @@ export default new Vuex.Store({
         avatar: value.avatar,
         token: value.token
       };
+      api.setJWTToken(value.token)
     },
     logout(state, value) {
       state.user = {};
     },
+    setPlaces(state, value) {
+      state.places = value
+    },
     setProductTypes(state, value) {
       state.productTypes = value
     },
-    setPlaces(state, value) {
-      state.places = value
+    setProducts(state, value) {
+      state.productTypes = value
     }
   },
   actions: {
-    updateProductTypes({commit}) {
-      ProductTypeResource.getAll().then(response => {
-        commit('setProductTypes', response.body);
-        console.log(response.body)
-      }, response => {
-        console.log(response.body)
-      });
-    },
     updatePlaces({commit}) {
-      PlacesResource.getAll().then(response => {
-        response.body.unshift({
+      api.endpoints.places.getAll().then(response => {
+        response.data.unshift({
           id:null,
           name:'None'
         });
-        commit('setPlaces', response.body);
-        console.log(response.body)
+        commit('setPlaces', response.data);
+        console.log(response.data)
       }, response => {
-        console.log(response.body)
+        console.log(response.data)
+      });
+    },
+    updateProductTypes({commit}) {
+      api.endpoints.productTypes.getAll().then(response => {
+        commit('setProductTypes', response.data);
+        console.log(response.data)
+      }, response => {
+        console.log(response.data)
+      });
+    },
+    updateProducts({commit}) {
+      api.endpoints.products.getAll().then(response => {
+        commit('setProducts', response.data);
+        console.log(response.data)
+      }, response => {
+        console.log(response.data)
       });
     },
   }

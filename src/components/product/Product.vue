@@ -39,7 +39,6 @@
 <script>
   import ProductList from '@/components/product/ProductList'
   import AddProduct from '@/components/product/AddProduct'
-  import {ProductResource} from '@/plugins/http'
 
   export default {
     components: {
