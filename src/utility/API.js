@@ -10,8 +10,8 @@ class API {
   }
 
   setJWTToken(token){
-    if (!!token) delete this.instance.defaults.headers['Authorization'];
-    this.instance.defaults.headers['Authorization'] = `JWT ${token}`
+    if (token) this.instance.defaults.headers['Authorization'] = `JWT ${token}`;
+    else delete this.instance.defaults.headers['Authorization'];
   }
 
   createEntities(entities) {

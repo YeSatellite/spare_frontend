@@ -81,7 +81,7 @@
 </template>
 
 <script>
-  import {api, EventBus} from '@/plugins'
+  import {api } from '@/plugins'
 
   export default {
     components: {},
@@ -90,9 +90,9 @@
         dialogOn: false,
         which: true,
         product: {
-          name: 'ghjk',
-          place_id: 1,
-          price: '580',
+          name: '',
+          place_id: null,
+          price: '',
           image: null,
           type_id: 1,
         },
@@ -125,7 +125,7 @@
       save() {
         if (this.$refs.form.validate()) {
           if (this.which) {
-            api.endpoints.create({
+            api.endpoints.productType.create({
               name: this.productType.name,
               device_id: this.productType.device + 1
             }).then(response => {
@@ -137,7 +137,6 @@
           } else {
             this.saveProduct()
           }
-
         }
       },
       saveProduct(){
@@ -147,13 +146,13 @@
         formData.append('price',this.product.price);
         formData.append('image',this.product.image);
         formData.append('type_id',this.product.type_id);
-        api.endpoints.products.create(formData).then(response => {
+        api.endpoints.product.create(formData).then(response => {
           console.log(response.data);
-          this.dialogOn = false
+          this.dialogOn = false;
+          this.$store.dispatch('updateProducts');
         }, response => {
           console.log(response.data)
         });
-        EventBus.$emit('productCreated')
       },
       onImagePicked($event) {
         this.product.image = $event.target.files[0];

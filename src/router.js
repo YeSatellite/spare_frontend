@@ -7,7 +7,9 @@ import Signin from '@/components/Signin'
 import Main from '@/components/Main'
 import PageNotFound from '@/components/PageNotFound'
 import Product from '@/components/product/Product'
-import ProductItem from '@/components/product/ProductItem'
+import ProductSelected from '@/components/product/ProductSelected'
+import Order from '@/components/order/Order'
+import OrderSelected from "@/components/order/OrderSelected";
 
 export default new Router({
   mode: 'history',
@@ -25,13 +27,23 @@ export default new Router({
       children: [
         {
           path: 'products',
-          name: 'products',
-          component: Product
+          name: 'product',
+          component: Product,
         },
         {
-          path: 'products/:id',
-          name: 'products-item',
-          component: ProductItem
+          path: '/products/:id',
+          name: 'product-selected',
+          component: ProductSelected
+        },
+        {
+          path: '/orders',
+          name: 'order',
+          component: Order
+        },
+        {
+          path: '/orders/:id',
+          name: 'order-selected',
+          component: OrderSelected
         },
       ]
 

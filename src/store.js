@@ -9,6 +9,7 @@ export default new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     user: {},
+    clients: [],
     places: [],
     productTypes: [],
     products: [],
@@ -16,6 +17,9 @@ export default new Vuex.Store({
   getters: {
     user: state => {
       return state.user
+    },
+    clients: state => {
+      return state.clients
     },
     places: state => {
       return state.places
@@ -36,8 +40,12 @@ export default new Vuex.Store({
       };
       api.setJWTToken(value.token)
     },
-    logout(state, value) {
+    logout(state) {
       state.user = {};
+      api.setJWTToken(null)
+    },
+    setClients(state, value) {
+      state.clients = value
     },
     setPlaces(state, value) {
       state.places = value
@@ -46,12 +54,20 @@ export default new Vuex.Store({
       state.productTypes = value
     },
     setProducts(state, value) {
-      state.productTypes = value
+      state.products = value
     }
   },
   actions: {
+    updateClients({commit}) {
+      api.endpoints.client.getAll().then(response => {
+        commit('setClients', response.data);
+        console.log(response.data)
+      }, response => {
+        console.log(response.data)
+      });
+    },
     updatePlaces({commit}) {
-      api.endpoints.places.getAll().then(response => {
+      api.endpoints.place.getAll().then(response => {
         response.data.unshift({
           id:null,
           name:'None'
@@ -63,7 +79,7 @@ export default new Vuex.Store({
       });
     },
     updateProductTypes({commit}) {
-      api.endpoints.productTypes.getAll().then(response => {
+      api.endpoints.productType.getAll().then(response => {
         commit('setProductTypes', response.data);
         console.log(response.data)
       }, response => {
@@ -71,7 +87,7 @@ export default new Vuex.Store({
       });
     },
     updateProducts({commit}) {
-      api.endpoints.products.getAll().then(response => {
+      api.endpoints.product.getAll().then(response => {
         commit('setProducts', response.data);
         console.log(response.data)
       }, response => {

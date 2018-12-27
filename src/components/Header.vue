@@ -39,8 +39,8 @@
         sideNav: false,
         menuItems: [
           {icon: 'home', title: 'Home', link: '/'},
-          {icon: 'store', title: 'Products', link: 'products'},
-          {icon: 'face', title: 'Foo', link: 'tools'},
+          {icon: 'store', title: 'Products', link: '/products'},
+          {icon: 'business_center', title: 'Order', link: '/orders'},
         ]
       }
     },

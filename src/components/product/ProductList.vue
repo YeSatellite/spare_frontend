@@ -3,7 +3,7 @@
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs12 sm6 md4 v-for="product in products" :key="product.id" >
-          <v-card :style="{'background-color': statusColor[product.status]}">
+          <v-card :style="{'background-color': statusColor[product.status]}" @click.native="selected(product.id)">
             <v-img class="white--text"
                    height="200px"
                    :src="product.image || 'http://savings.gov.pk/wp-content/plugins/ldd-directory-lite/public/images/noimage.png'">
@@ -23,8 +23,9 @@
 </template>
 
 <script>
-
+  import products from '@/plugins/mixins/product'
   export default {
+    mixins: [products],
     props: {
       filter: {
         required: true
@@ -32,8 +33,6 @@
     },
     data() {
       return {
-        products: [],
-        busy: false,
         statusColor:{
           0:'#FFDDDD',
           1:'#FFFFAA',
@@ -43,29 +42,14 @@
     },
     computed:{
       products(){
-        return this.$store.
+        console.log(this.filter);
+        return this.productsFilter(this.filter)
       }
     },
-    mounted(){
-      this.$store.dispatch('updateProducts');
-    },
-    methods: {
-      /***
-      getProducts(){
-        if (this.busy) return;
-        this.busy = true;
-        api.endpoints.products.getAll({
-          search: this.filter.search,
-          device: this.filter.device.map(val => val+1).join('-'),
-          few: this.filter.few?1:0
-        }).then(response => {
-          this.products = response.data;
-          this.busy = false;
-          console.log(response.data)
-        }, response => {
-          console.log(response.data)
-        });
-        ***/
+    methods:{
+      selected(id){
+        console.log(id);
+        this.$router.push({ name: 'product-selected', params: { id }})
       }
     }
   }

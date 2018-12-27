@@ -20,12 +20,13 @@
       }
     },
     mounted() {
-      console.log(this.$store.getters.user.token);
-      if (this.$store.getters.user.token == null) {
+      if (!this.$store.getters.user.token) {
         this.$router.push('signin')
       }
-      this.$store.dispatch('updateProductTypes');
+      this.$store.dispatch('updateClients');
       this.$store.dispatch('updatePlaces');
+      this.$store.dispatch('updateProductTypes');
+      this.$store.dispatch('updateProducts');
     },
   }
 </script>
