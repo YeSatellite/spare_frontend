@@ -12,12 +12,6 @@
             v-model="filter.search"
         ></v-text-field>
       </v-flex>
-      <v-flex xs12 sm4>
-        <v-btn-toggle v-model="filter.status" multiple style="margin-top: 9px;">
-          <v-btn flat style="height: 45px">waiting</v-btn>
-          <v-btn flat style="height: 45px">active &nbsp</v-btn>
-        </v-btn-toggle>
-      </v-flex>
       <v-flex xs12>
         <app-order-list :filter="filter"></app-order-list>
       </v-flex>

@@ -15,8 +15,11 @@
             </v-card-title>
             <v-card-text class="text-sm-left">
               <div>
-                <div class="caption text-sm-center">25(8652₸) / 96(54485₸)</div>
-                <v-progress-linear v-model="progress"></v-progress-linear>
+                <div class="caption text-sm-center">
+                  {{order.items_info.count}} ({{order.items_info.money|tenge}}) /
+                  {{order.items_info.countAll}} ({{order.items_info.moneyAll|tenge}})
+                </div>
+                <v-progress-linear :value="order.items_info.count/order.items_info.countAll*100"></v-progress-linear>
                 <div class="grey--text">
                   <v-layout>
                     <v-flex xs6>{{order.created|dateFormatShort}}</v-flex>
@@ -39,7 +42,7 @@
 </template>
 
 <script>
-  import {api} from "@/plugins";
+  import {api, EventBus} from "@/plugins";
   import moment from "moment"
 
   export default {
@@ -49,12 +52,10 @@
       },
     },
     mounted() {
-      api.endpoints.order.getAll().then(response => {
-        this.orders = response.data
-      }, error => {
-        console.log(error.response.data)
+      this.getOrders();
+      EventBus.$on('order-update', () => {
+        this.getOrders();
       });
-      console.log(this.filter);
     },
     data() {
       return {
@@ -64,7 +65,6 @@
           2: '#FFFFFF',
         },
         orders: [],
-        progress:50,
       }
     },
     computed: {
@@ -84,6 +84,13 @@
       }
     },
     methods: {
+      getOrders(){
+        api.endpoints.order.getAll().then(response => {
+          this.orders = response.data
+        }, error => {
+          console.log(error.response.data)
+        });
+      },
       detail(id) {
         this.$router.push({name: 'order-selected', params: {id}})
       },

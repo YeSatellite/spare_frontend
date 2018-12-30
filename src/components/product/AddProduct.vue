@@ -68,8 +68,8 @@
             </div>
           </v-container>
         </v-form>
-
       </v-card-text>
+
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" flat @click.native="which = !which">Change</v-btn>

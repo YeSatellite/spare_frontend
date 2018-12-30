@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import {api } from '@/plugins'
+  import {api ,EventBus } from '@/plugins'
 
   export default {
     components: {},
@@ -43,7 +43,6 @@
         dialogOn: false,
         order: {
           client_id: null,
-          status: 'w'
         },
         validator: {
           client_id: [v => !!v || 'Client is required',],
@@ -59,20 +58,13 @@
       save() {
         if (this.$refs.form.validate()) {
           api.endpoints.order.create(this.order).then(response => {
-            console.log(response.data)
+            EventBus.$emit('order-update');
           }, error => {
             console.log(error.response.data)
           });
+          this.dialogOn = false
         }
       },
     }
   }
 </script>
-
-<!--<style scoped>-->
-  <!--.fab-container {-->
-    <!--position: fixed;-->
-    <!--bottom: 0;-->
-    <!--right: 0;-->
-  <!--}-->
-<!--</style>-->

@@ -5,8 +5,8 @@ import Moment from "moment";
 
 // ========================API===========================
 
-
-export const api = new API('http://192.168.1.37:8000/');
+const host = 'http://192.168.1.37:8000/';
+export const api = new API(host);
 
 api.setJWTToken(Vuex.getters.user.token);
 api.instance.interceptors.response.use(null, error => {
@@ -22,8 +22,10 @@ api.createEntities({
   product:'depot/products',
   order:'store/orders',
   orderItem:'store/order-items',
+  trade:'finance/trades',
+  finishTrade: {path:'finance/trades',action:'finish'},
 });
-
+api.orderExcel = (id)=>`${host}store/orders/${id}/items`;
 
 require('moment/locale/kk');
 
@@ -34,7 +36,8 @@ require('moment/locale/kk');
 export const EventBus = new Vue();
 
 // ======================FILTERS===========================
-Vue.filter("tenge", str => str+' ₸');
+Vue.filter("tenge", str => str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")+' ₸');
+Vue.filter("dateFormatShort", str => Moment(String(str)).format('ll'));
 
 
 

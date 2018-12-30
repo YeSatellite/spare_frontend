@@ -69,8 +69,8 @@ export default new Vuex.Store({
     updatePlaces({commit}) {
       api.endpoints.place.getAll().then(response => {
         response.data.unshift({
-          id:null,
-          name:'None'
+          id: null,
+          name: 'None'
         });
         commit('setPlaces', response.data);
         console.log(response.data)
@@ -88,8 +88,12 @@ export default new Vuex.Store({
     },
     updateProducts({commit}) {
       api.endpoints.product.getAll().then(response => {
-        commit('setProducts', response.data);
-        console.log(response.data)
+        let data = response.data.map(x => {
+          x.info = {id: x.id, price: x.price};
+          x.fullName = `${x.type.name} ${x.name}`;
+          return x
+        });
+        commit('setProducts', data);
       }, response => {
         console.log(response.data)
       });
