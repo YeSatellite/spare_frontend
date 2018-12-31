@@ -385,11 +385,3 @@
     }
   }
 </script>
-
-<style scoped>
-  .fab-container {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-  }
-</style>

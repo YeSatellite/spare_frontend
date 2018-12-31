@@ -2,15 +2,15 @@
   <v-container grid-list-md text-xs-center>
     <v-layout row wrap>
       <v-flex xs12 sm8>
-        <!--<v-text-field-->
-            <!--style="margin-top: 8px; margin-left: 24px"-->
-            <!--flat-->
-            <!--label="Search"-->
-            <!--prepend-inner-icon="search"-->
-            <!--solo-inverted-->
-            <!--:hide-details="true"-->
-            <!--v-model="filter.search"-->
-        <!--&gt;</v-text-field>-->
+        <v-autocomplete class="mr-5"
+            v-model="filter.client"
+            :items="clients"
+            item-value="id"
+            item-text="username"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12 sm4>
+        <v-switch v-model="filter.archive" label="Archive"></v-switch>
       </v-flex>
       <v-flex xs12>
         <v-layout row wrap>
@@ -72,7 +72,7 @@
     data() {
       return {
         filter:{
-          client: 2,
+          client: 0,
           archive: false,
           page:1
         },
@@ -80,12 +80,25 @@
         pages:1
       }
     },
+    computed: {
+      clients() {
+        let clients =  this.$store.getters.clients.slice();
+        clients.unshift({id:0,username:'All'});
+        return clients
+      },
+    },
     watch: {
       filter: {
         handler: function(value) {
-          console.log(value.page);
-          api.endpoints.trade.getAll({page:value.page}).then(response => {
+          let query = {
+            page:value.page,
+            archive:value.archive
+          };
+          if(value.client) query.client = value.client;
+
+            api.endpoints.trade.getAll(query).then(response => {
             this.trades = response.data.results;
+            console.log(this.trades);
             this.pages = response.data.pages
           }, error => {
             console.log(error.response.data)
