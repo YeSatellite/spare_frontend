@@ -41,6 +41,7 @@
         <td>{{ props.item.price|tenge }}</td>
         <td>{{ props.item.amount }}</td>
         <td>{{ props.item.total|tenge}}</td>
+        <td>{{ props.item.product.place.name}}</td>
         <td v-if="order.status === 'w'" class="text-xs-center">
           <v-btn
               small icon
@@ -89,6 +90,9 @@
         <td>
           {{newItem.product.price*newItem.amount|tenge}}
         </td>
+        <td>
+          {{newItem.product.place.name}}
+        </td>
         <td class="text-xs-center">
           <v-btn @click="saveNewItem()" class="primary">
             <v-icon>playlist_add</v-icon>
@@ -111,46 +115,54 @@
                 <v-icon>description</v-icon>
               </v-btn>
             </a>
-            <span v-if="order.status === 'w'">
-              <v-dialog
-                  width="500"
-                  v-model="dialogOrderWarning">
-                <v-btn
-                    slot="activator"
-                    class="error">
-                  <v-icon>delete</v-icon>
-                </v-btn>
-                <v-card>
-                  <v-card-title
-                      class="headline grey lighten-2"
-                      primary-title>
-                    Warning
-                  </v-card-title>
-                  <v-card-text>
-                    Are you sure to remove this ORDER?
-                  </v-card-text>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                        color="primary"
-                        flat
-                        @click="removeOrder">
-                      Yes
-                    </v-btn>
-                    <v-btn
-                        color="primary"
-                        flat
-                        @click="dialogOrderWarning = false">
-                      No
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-              <v-btn class="primary" @click="finish">
-                <v-icon>save</v-icon>
+            <v-dialog
+                v-if="order.status === 'w'"
+                width="500"
+                v-model="dialogOrderWarning">
+              <v-btn
+                  slot="activator"
+                  class="error">
+                <v-icon>delete</v-icon>
               </v-btn>
-            </span>
+              <v-card>
+                <v-card-title
+                    class="headline grey lighten-2"
+                    primary-title>
+                  Warning
+                </v-card-title>
+                <v-card-text>
+                  Are you sure to remove this ORDER?
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      color="primary"
+                      flat
+                      @click="removeOrder">
+                    Yes
+                  </v-btn>
+                  <v-btn
+                      color="primary"
+                      flat
+                      @click="dialogOrderWarning = false">
+                    No
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+            <v-btn
+                v-if="order.status === 'w'"
+                class="primary"
+                @click="activate">
+              <v-icon>save</v-icon>
+            </v-btn>
+            <v-btn
+                v-if="order.status === 'a'"
+                class="primary"
+                @click="finish">
+              <v-icon>archive</v-icon>
+            </v-btn>
           </div>
         </v-flex>
       </v-layout>
@@ -251,7 +263,8 @@
         newItem: {
           product: {
             id: 0,
-            price: 0
+            price: 0,
+            place: {name: 'None'}
           },
           amount: 1,
         },
@@ -275,6 +288,7 @@
           {text: 'Price', value: 'price'},
           {text: 'Amount', value: 'amount'},
           {text: 'Total', value: 'total'},
+          {text: 'Place', value: 'place'},
         ];
         if (this.order.status === 'w'){
           headers.push({text: 'Status', value: 'status', align: 'center'},)
@@ -282,7 +296,12 @@
         return headers
       },
       products() {
-        return this.$store.getters.products
+        return this.$store.getters.products.map(x => {
+          return {
+            info:x,
+            fullName:`${x.type.name} ${x.name}`
+          }
+        })
       },
       status() {
         let all = {
@@ -347,15 +366,8 @@
         }, error => {
           console.log(error.response.data)
         });
-        this.newItem = {
-          product: {
-            id: 0,
-            price: 0
-          },
-          amount: 1,
-        };
       },
-      finish() {
+      activate() {
         if (!this.status.ok) {
           this.snackbar.text = 'Choose all';
           this.snackbar.show = true;
@@ -382,6 +394,13 @@
         });
         this.dialogItemWarning = false
       },
+      finish(){
+        api.endpoints.finishTrade.post({id:this.order.trade_id}).then(response => {
+          this.order = response.data.order
+        }, error => {
+          console.log(error.response.data)
+        });
+      }
     }
   }
 </script>

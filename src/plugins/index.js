@@ -23,7 +23,7 @@ api.createEntities({
   order:'store/orders',
   orderItem:'store/order-items',
   trade:'finance/trades',
-  finishTrade: {path:'finance/trades',action:'finish'},
+  finishTrade: {path:'finance/trades',action:'archive'},
 });
 api.orderExcel = (id)=>`${host}store/orders/${id}/items`;
 

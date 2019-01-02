@@ -88,12 +88,7 @@ export default new Vuex.Store({
     },
     updateProducts({commit}) {
       api.endpoints.product.getAll().then(response => {
-        let data = response.data.map(x => {
-          x.info = {id: x.id, price: x.price};
-          x.fullName = `${x.type.name} ${x.name}`;
-          return x
-        });
-        commit('setProducts', data);
+        commit('setProducts', response.data);
       }, response => {
         console.log(response.data)
       });

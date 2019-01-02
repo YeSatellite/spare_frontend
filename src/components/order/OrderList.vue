@@ -2,7 +2,7 @@
   <div>
     <v-container grid-list-md>
       <v-layout row wrap>
-        <v-flex xs12 sm6 md4 v-for="order in ordersFiltered" :key="order.id">
+        <v-flex xs12 sm4 md3 v-for="order in ordersFiltered" :key="order.id">
           <v-card>
             <v-img
                 :src="order.client.avatar" alt="avatar"
