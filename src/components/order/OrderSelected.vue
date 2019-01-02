@@ -34,6 +34,7 @@
     <v-data-table v-if="items"
                   :headers="itemHeaders"
                   :items="items"
+                  :rows-per-page-items="[{text:'All',value:-1},10]"
                   class="elevation-1">
       <template slot="items" slot-scope="props">
         <td>{{ props.item.product.id}}</td>
@@ -215,12 +216,8 @@
 <script>
   import {api} from "@/plugins";
   import moment from "moment"
-  import AddItem from "./AddItem";
 
   export default {
-    components: {
-      'app-add-item': AddItem,
-    },
     mounted() {
       api.endpoints.order.getOne({id: this.id}).then(response => {
         this.order = response.data;

@@ -40,8 +40,8 @@
         menuItems: [
           {icon: 'home', title: 'Home', link: '/'},
           {icon: 'store', title: 'Products', link: '/products'},
-          {icon: 'assignment', title: 'Order', link: '/orders'},
-          {icon: 'business_center', title: 'Trade', link: '/trades'},
+          {icon: 'assignment', title: 'Orders', link: '/orders'},
+          {icon: 'person', title: 'Client', link: '/clients'},
         ]
       }
     },

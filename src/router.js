@@ -10,7 +10,9 @@ import Product from '@/components/product/Product'
 import ProductSelected from '@/components/product/ProductSelected'
 import Order from '@/components/order/Order'
 import OrderSelected from "@/components/order/OrderSelected";
-import Trade from "@/components/trade/Trade";
+import Trade from "@/components/order/TradeList";
+import Client from "@/components/client/Client";
+import ClientSelected from "@/components/client/ClientSelected";
 
 export default new Router({
   mode: 'history',
@@ -47,9 +49,14 @@ export default new Router({
           component: OrderSelected
         },
         {
-          path: '/trades',
-          name: 'trade',
-          component: Trade
+          path: '/clients',
+          name: 'client',
+          component: Client
+        },
+        {
+          path: '/clients/:id',
+          name: 'client-selected',
+          component: ClientSelected
         },
       ]
 
