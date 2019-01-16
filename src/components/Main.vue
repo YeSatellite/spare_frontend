@@ -38,4 +38,7 @@
   .alignright {
     float: right;
   }
+  .card-title {
+    max-height:60px
+  }
 </style>

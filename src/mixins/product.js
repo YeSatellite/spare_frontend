@@ -10,7 +10,7 @@ export default {
       }
 
       if(filter.few){
-        products = products.filter(product => product.status <= 1)
+        products = products.filter(product => product.amount < 2)
       }
 
       if (filter.search) {

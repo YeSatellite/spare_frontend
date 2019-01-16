@@ -130,7 +130,8 @@
               device_id: this.productType.device + 1
             }).then(response => {
               this.product.type_id = response.data.id;
-              this.saveProduct()
+              this.saveProduct();
+              this.$store.dispatch('updateProductTypes');
             }, response => {
               console.log(response.data)
             });

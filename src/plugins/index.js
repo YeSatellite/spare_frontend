@@ -38,6 +38,7 @@ export const EventBus = new Vue();
 // ======================FILTERS===========================
 Vue.filter("tenge", str => str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")+' ₸');
 Vue.filter("dateFormatShort", str => Moment(String(str)).format('ll'));
+Vue.filter("dateFormatDigit", str => Moment(String(str)).format('L'));
 
 
 

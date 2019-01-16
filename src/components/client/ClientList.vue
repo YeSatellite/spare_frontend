@@ -8,15 +8,15 @@
                 :src="client.avatar" alt="avatar"
                 aspect-ratio="0.85">
             </v-img>
-            <v-card-title>
+            <v-card-title class="card-title">
               <span class="title">
                 {{client.first_name}} {{client.last_name}} ({{client.username}})
               </span>
             </v-card-title>
-            <v-card-text class="text-sm-left">
+            <v-card-text class="text-sm-right">
               <div>
                 <div class="grey--text">
-                  TODO
+                  {{client.money|tenge}}
                 </div>
               </div>
             </v-card-text>
@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import {api, EventBus} from "@/plugins";
+  import {api} from "@/plugins";
 
   export default {
     props: {
@@ -40,9 +40,10 @@
       },
     },
     mounted() {
-      this.getClients();
-      EventBus.$on('client-update', () => {
-        this.getClients();
+      api.endpoints.client.getAll().then(response => {
+        this.clients = response.data
+      }, error => {
+        console.log(error.response.data)
       });
     },
     data() {
@@ -60,13 +61,6 @@
       }
     },
     methods: {
-      getClients(){
-        api.endpoints.client.getAll().then(response => {
-          this.clients = response.data
-        }, error => {
-          console.log(error.response.data)
-        });
-      },
       detail(id) {
         this.$router.push({name: 'client-selected', params: {id}})
       },

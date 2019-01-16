@@ -7,7 +7,7 @@
               :src="trade.order.client.avatar" alt="avatar"
               aspect-ratio="0.85">
           </v-img>
-          <v-card-title>
+          <v-card-title class="card-title">
               <span class="title">
                 {{trade.order.client.first_name}} {{trade.order.client.last_name}} ({{trade.order.client.username}})
               </span>
@@ -63,7 +63,8 @@
         return {
           search: this.search,
           archive: this.archive,
-          page: this.page
+          page: this.page,
+          type: 'g',
         }
       },
       clients() {

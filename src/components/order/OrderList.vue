@@ -7,7 +7,7 @@
               :src="order.client.avatar" alt="avatar"
               aspect-ratio="0.85">
           </v-img>
-          <v-card-title>
+          <v-card-title class="card-title">
               <span class="title">
                 {{order.client.first_name}} {{order.client.last_name}} ({{order.client.username}})
               </span>

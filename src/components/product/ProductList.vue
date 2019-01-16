@@ -23,7 +23,7 @@
                 </div>
                 <v-spacer></v-spacer>
                 <v-icon
-                    v-if="product.amount<3"
+                    v-if="product.amount<2"
                     size="40"
                     :color="product.amount===0?'error':'warning'">
                   error
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import products from '@/plugins/mixins/product'
+  import products from '@/mixins/product'
   export default {
     mixins: [products],
     props: {
@@ -60,13 +60,11 @@
     },
     computed:{
       products(){
-        console.log(this.filter);
         return this.productsFilter(this.filter)
       }
     },
     methods:{
       selected(id){
-        console.log(id);
         this.$router.push({ name: 'product-selected', params: { id }})
       }
     }

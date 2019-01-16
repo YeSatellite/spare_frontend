@@ -1,7 +1,7 @@
 <template>
   <div>
     {{search}}
-    <v-toolbar tabs>
+    <v-toolbar tabs class="pt-3">
       <v-text-field
           color="red"
           v-model="search"
